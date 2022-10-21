@@ -20,3 +20,4 @@ submit_ids(id, from = 9606, to = 7227, filter = "none", version = 8)
 \description{
 Function to submit a query to DIOPT
 }
+\keyword{internal}

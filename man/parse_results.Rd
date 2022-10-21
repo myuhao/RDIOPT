@@ -12,3 +12,4 @@ parse_results(raw_res)
 \description{
 Helper function to parse the results
 }
+\keyword{internal}

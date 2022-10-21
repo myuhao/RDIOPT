@@ -10,8 +10,7 @@ Authors@R:
       email = "myuhao@gmail.com"
     )
 Maintainer: Yuhao Min <myuhao@gmail.com>
-Description: R interface to search orthologs between species, using the
-[DIOPT](https://www.flyrnai.org/diopt) tool.
+Description: R interface to search orthologs between species, using the [DIOPT](https://www.flyrnai.org/diopt) tool.
 License: MIT + file LICENSE
 Encoding: UTF-8
 RoxygenNote: 7.2.1

@@ -12,3 +12,4 @@ parse_search_detail(raw_res)
 \description{
 Helper function to parse the query
 }
+\keyword{internal}

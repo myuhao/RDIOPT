@@ -6,7 +6,7 @@
 #' [API](https://www.flyrnai.org/tools/diopt/web/api).
 #'
 #' @importFrom magrittr %>%
-#' @importFrom purrr map imap pmap
+#' @importFrom purrr map imap pmap walk
 #' @importFrom tibble enframe
 #' @importFrom tidyr unnest
 #' @importFrom dplyr select
@@ -109,6 +109,8 @@ find_orthologs = function(genes, from = 9606, to = 7227, filter = "none", versio
 #' @importFrom dplyr setdiff
 #'
 #' @return The vector we are checking.
+#'
+#' @keywords internal
 check_arg = function(
     vec,
     allowed
@@ -135,6 +137,8 @@ check_arg = function(
 #' @param to Target species.
 #' @param filter Filter of the results, see API [API](https://www.flyrnai.org/tools/diopt/web/api).
 #' @param version What version should be used. Currently v9 is still in beta.
+#'
+#' @keywords internal
 submit_ids = function(id, from = 9606, to = 7227, filter = "none", version = 8) {
   response = str_c(
     "https://www.flyrnai.org/tools/diopt/web/diopt_api/",
@@ -161,6 +165,8 @@ submit_ids = function(id, from = 9606, to = 7227, filter = "none", version = 8) 
 #' @importFrom magrittr %>%
 #'
 #' @param raw_res The content of a httr response
+#'
+#' @keywords internal
 parse_search_detail = function(raw_res) {
   raw_res$search_details %>%
     as_tibble() %>%
@@ -190,6 +196,8 @@ parse_search_detail = function(raw_res) {
 #' @importFrom magrittr %>%
 #'
 #' @param raw_res The content of a httr response
+#'
+#' @keywords internal
 parse_results = function(raw_res) {
   raw_res$results %>%
     enframe(name = "from_id") %>%
@@ -215,6 +223,8 @@ parse_results = function(raw_res) {
 #' @importFrom magrittr %>%
 #'
 #' @param raw_res The content of a httr response
+#'
+#' @keywords internal
 parse_response = function(raw_res) {
   query_info = parse_search_detail(raw_res)
   results_info = NULL

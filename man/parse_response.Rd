@@ -12,3 +12,4 @@ parse_response(raw_res)
 \description{
 Function to parse the response.
 }
+\keyword{internal}

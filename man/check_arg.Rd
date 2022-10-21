@@ -12,3 +12,4 @@ The vector we are checking.
 \description{
 Check if all elements in the vecter is allowed.
 }
+\keyword{internal}
