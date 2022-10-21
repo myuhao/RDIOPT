@@ -31,6 +31,7 @@
 #'    - "8364": Xenopus tropicalis (Western clawed frog)
 #'    - **"9606"**: Homo sapiens (Human)
 #'    - "10090": Mus musculus (Mouse)
+#'    - "10116": Rattus norvegicus (Rat)
 #'    - "3702": Arabidopsis thaliana (Thale cress)
 #'
 #' If `from`/`to` is no the same length as the input `genes` or 1,
@@ -42,6 +43,24 @@
 #'
 #' @export
 find_orthologs = function(genes, from = 9606, to = 7227, filter = "none", version = 8) {
+  # Convert to Chr
+  from = as.character(from)
+  to = as.character(to)
+  filter = as.character(filter)
+  version = as.character(version)
+  # Checkling parameters
+  list(from, to) %>%
+    walk(
+      check_arg,
+      allowed = c(
+        "all", "4896", "4932", "6239",
+        "7227", "7955", "8364",
+        "9606", "10090", "10116", "3702"
+        )
+      )
+  check_arg(filter, c("none", "best_match", "exclude_score_less_1", "exclude_score_less_2"))
+  check_arg(version, c("8", "9"))
+
   # Fix parameters
   n_genes = length(genes)
   params = list(
@@ -83,6 +102,28 @@ find_orthologs = function(genes, from = 9606, to = 7227, filter = "none", versio
 
 }
 
+
+#' Check if all elements in the vecter is allowed.
+#'
+#' @importFrom stringr str_c
+#' @importFrom dplyr setdiff
+#'
+#' @return The vector we are checking.
+check_arg = function(
+    vec,
+    allowed
+  ) {
+  if (!all(vec %in% allowed)) {
+    not_allowed = setdiff(vec, allowed)
+    not_allowed = unique(not_allowed)
+    if (length(not_allowed) > 3) {
+      not_allowed = not_allowed[1:3]
+    }
+    not_allowed = str_c(not_allowed, collapse = ", ")
+    stop("Parameters ", not_allowed, " are not supported. Please check function documentation")
+  }
+  invisible(vec)
+}
 
 #' Function to submit a query to DIOPT
 #' @importFrom stringr str_c

@@ -39,6 +39,7 @@ DIOPT currently supports the following IDs:
 \item "8364": Xenopus tropicalis (Western clawed frog)
 \item \strong{"9606"}: Homo sapiens (Human)
 \item "10090": Mus musculus (Mouse)
+\item "10116": Rattus norvegicus (Rat)
 \item "3702": Arabidopsis thaliana (Thale cress)
 }
 
