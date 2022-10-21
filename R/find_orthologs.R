@@ -41,7 +41,7 @@
 #' See [API Documentation](https://www.flyrnai.org/tools/diopt/web/api)
 #'
 #' @export
-convert_genes = function(genes, from = 9606, to = 7227, filter = "none", version = 8) {
+find_orthologs = function(genes, from = 9606, to = 7227, filter = "none", version = 8) {
   # Fix parameters
   n_genes = length(genes)
   params = list(
