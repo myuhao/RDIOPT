@@ -1,0 +1,83 @@
+---
+format: gfm
+execute: 
+  warning: false
+---
+
+```{r}
+#| include: false
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+library(tidyverse)
+```
+
+# RDIOPT
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+RDIOPT is a simple wrapper around the [DIOPT](https://www.flyrnai.org/diopt) Ortholog Finder. The intention for this package is to allow querying orthologs from R directly, without copy and paste. 
+
+
+RDIOPT relies on the [DIOPT API](https://www.flyrnai.org/tools/diopt/web/api) to query and search results.
+
+## Installation
+
+You can install the development version of RDIOPT from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("myuhao/RDIOPT")
+```
+
+## Example
+
+Call `find_orthologs()` with some of your gene of interests. The function should give you a nice `tibble` with all the relevant information.
+
+:::{.callout-note}
+Note that currently DIOPT API only supports **Entrez ID**. You will need to convert your genes accordingly.
+:::
+
+```{r example}
+library(RDIOPT)
+
+gene_of_interests = c(1232, 7316)
+orthologs = find_orthologs(gene_of_interests, from = 9606, to = 7227, filter = "none")
+colnames(orthologs)
+```
+
+The result table has many relevant information, but it can be summarized in to three categories:
+
+1. Function parameters.
+1. Source gene information.
+1. Target gene information.
+
+
+#### Function parameters
+
+DIOPT recorded the following parameter used for the query:
+```{r}
+#| echo: false
+orthologs[c(1:3, 10)]
+```
+
+#### Source gene information
+
+DIOPT will try to find information of the gene you submitted.
+```{r}
+#| echo: false
+orthologs[4:9]
+```
+#### Source gene information
+
+Here is the actual ortholog information. Fileds are left `NA` in case no orthologs can be found.
+```{r}
+#| echo: false
+orthologs[11:27]
+```
+
+## Reference
