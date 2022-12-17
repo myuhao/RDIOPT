@@ -15,6 +15,17 @@ knitr::opts_chunk$set(
 library(tidyverse)
 ```
 
+# TODOs
+
+1. supports id conversion?
+  - Use suggest, use AnnotationDbi
+1. input NA should return NA
+  1. Add a column for search term
+  1. Two tires:
+    - Query NA, meaning the conversion from symbol to entrezID failed
+    - No ortholog, meaning no return
+1. fix buildignore
+
 # RDIOPT
 
 <!-- badges: start -->

@@ -7,7 +7,7 @@
 find_orthologs(genes, from = 9606, to = 7227, filter = "none", version = 8)
 }
 \arguments{
-\item{genes}{A single entrez gene id}
+\item{genes}{A chr vector of genes. See @details}
 
 \item{from}{Source species. See @details}
 
@@ -27,6 +27,10 @@ This function is a wrapper of the DIOPT
 \href{https://www.flyrnai.org/tools/diopt/web/api}{API}.
 }
 \details{
+The \code{genes} argument can either be a enterzID, which will be used as is.
+Or it can be a gene symbol, which will be converted to entrezID using
+the \link[org.Hs.eg.db:org.Hs.egBASE]{org.Hs.eg.db::org.Hs.eg.db} database.
+
 The \code{from} and \code{to} arguments are the NCBI Taxonomy ID.
 DIOPT currently supports the following IDs:
 \itemize{
@@ -49,4 +53,6 @@ will warning and recycle to match the length of gene.
 The \code{filter} argument filter based on score. Options are:
 \code{none}/\code{best_match}/\code{exclude_score_less_1}/\code{exclude_score_less_2}.
 See \href{https://www.flyrnai.org/tools/diopt/web/api}{API Documentation}
+
+The function is not vectorized, because DIOPT API is not vectorized.
 }

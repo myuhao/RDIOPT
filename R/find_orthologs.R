@@ -11,7 +11,7 @@
 #' @importFrom tidyr unnest
 #' @importFrom dplyr select
 #'
-#' @param genes A single entrez gene id
+#' @param genes A chr vector of genes. See @details
 #' @param from Source species. See @details
 #' @param to Target species. See @details
 #' @param filter Filter of the results. See @details.
@@ -19,7 +19,12 @@
 #'
 #' @return A tibble with requested information.
 #'
-#' @details The `from` and `to` arguments are the NCBI Taxonomy ID.
+#' @details
+#' The `genes` argument can either be a enterzID, which will be used as is.
+#' Or it can be a gene symbol, which will be converted to entrezID using
+#' the [org.Hs.eg.db::org.Hs.eg.db] database.
+#'
+#' The `from` and `to` arguments are the NCBI Taxonomy ID.
 #' DIOPT currently supports the following IDs:
 #'
 #'    - "all":  All Species (Avaiable for Target only)
@@ -41,6 +46,9 @@
 #' `none`/`best_match`/`exclude_score_less_1`/`exclude_score_less_2`.
 #' See [API Documentation](https://www.flyrnai.org/tools/diopt/web/api)
 #'
+#' The function is not vectorized, because DIOPT API is not vectorized.
+#'
+#'
 #' @export
 find_orthologs = function(genes, from = 9606, to = 7227, filter = "none", version = 8) {
   # Convert to Chr
@@ -60,6 +68,17 @@ find_orthologs = function(genes, from = 9606, to = 7227, filter = "none", versio
       )
   check_arg(filter, c("none", "best_match", "exclude_score_less_1", "exclude_score_less_2"))
   check_arg(version, c("8", "9"))
+
+  # Conversion
+  if (!is_entrezID(genes, silent = TRUE)) {
+    rlang::check_installed("org.Hs.eg.db", reason = "Package \"org.Hs.eg.db\" is required for the gene symbol -> entrezID conversion")
+    genes = convert_to_entrezID(genes)
+
+    # After conversion clean up:
+    if (length(genes) < 1 || all(is.na(genes))) {
+      stop("The input genes can't be converted to entrezIDs\n")
+    }
+  }
 
   # Fix parameters
   n_genes = length(genes)
@@ -127,6 +146,12 @@ check_arg = function(
   invisible(vec)
 }
 
+#' Deal with a NA request
+#' @keywords internal
+submit_ids_NA = function() {
+
+}
+
 #' Function to submit a query to DIOPT
 #' @importFrom stringr str_c
 #' @importFrom httr GET content
@@ -140,6 +165,9 @@ check_arg = function(
 #'
 #' @keywords internal
 submit_ids = function(id, from = 9606, to = 7227, filter = "none", version = 8) {
+  if (is.na(id)) {
+    return(list(is_NA = TRUE))
+  }
   response = str_c(
     "https://www.flyrnai.org/tools/diopt/web/diopt_api/",
     "v", version, "/",
@@ -214,6 +242,12 @@ parse_results = function(raw_res) {
     relocate(methods, .after = last_col())
 }
 
+#' Tibble when there is no ortholog
+#'
+#' @keywords internal
+results_no_ortholog = function() {
+  tibble::tibble(to_id = NA_character_, to_symbol = "No Ortholog Data")
+}
 
 #' Function to parse the response.
 #' @importFrom stringr str_detect
@@ -226,10 +260,14 @@ parse_results = function(raw_res) {
 #'
 #' @keywords internal
 parse_response = function(raw_res) {
+  if (isTRUE(raw_res$is_NA)) {
+    return(NA)
+  }
+
   query_info = parse_search_detail(raw_res)
   results_info = NULL
   if (str_detect(raw_res$message, "No Ortholog Data")) {
-    results_info = tibble(to_id = NA_character_, to_symbol = "No Ortholog Data")
+    results_info = results_no_ortholog()
   } else {
     results_info = parse_results(raw_res)
   }
@@ -237,3 +275,5 @@ parse_response = function(raw_res) {
     mutate(results = list(results_info)) %>%
     unnest(cols = results)
 }
+
+

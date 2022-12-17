@@ -1,7 +1,7 @@
 Package: RDIOPT
 Type: Package
 Title: Query Ortholog using DIOPT service
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: 
     person(
       given = "Yuhao",
@@ -13,7 +13,7 @@ Maintainer: Yuhao Min <myuhao@gmail.com>
 Description: R interface to search orthologs between species, using the [DIOPT](https://www.flyrnai.org/diopt) tool.
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 Imports:
   dplyr,
@@ -24,5 +24,8 @@ Imports:
   tibble,
   tidyr
 Suggests: 
+    AnnotationDbi
+    org.Hs.eg.db
+    devtools
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
