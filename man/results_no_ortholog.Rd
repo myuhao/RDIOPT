@@ -2,11 +2,11 @@
 % Please edit documentation in R/find_orthologs.R
 \name{results_no_ortholog}
 \alias{results_no_ortholog}
-\title{Tibble when there is no ortholog}
+\title{Helper function to parse the results that has no ortholog}
 \usage{
 results_no_ortholog()
 }
 \description{
-Tibble when there is no ortholog
+Helper function to parse the results that has no ortholog
 }
 \keyword{internal}

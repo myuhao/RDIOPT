@@ -8,6 +8,8 @@
 #' @details This function will return a vector of the same length as
 #' the input. If the input doesn't mtach, will return `NA` instead
 #'
+#' @keywords internal
+#'
 #' @seealso [AnnotationDbi::mapIds()] and [org.Hs.eg.db::org.Hs.eg.db]
 convert_to_entrezID = function(
     symbols
@@ -53,11 +55,11 @@ convert_to_entrezID = function(
 #' @keywords internal
 is_entrezID = function(input, silent = TRUE) {
 
-  is_chr = str_detect(input, "\\D")
+  not_entrez = str_detect(input, "\\D") | is.na(input)
 
-  if (any(is_chr) && !silent) {
-    warning(input[is_chr], " might not be a entrezID")
+  if (any(not_entrez) && !silent) {
+    warning(input[not_entrez], " might not be a entrezID")
   }
 
-  return(!any(is_chr))
+  return(!any(not_entrez))
 }

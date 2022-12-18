@@ -22,10 +22,11 @@ Imports:
   purrr,
   stringr,
   tibble,
-  tidyr
+  tidyr,
+  rlang
 Suggests: 
-    AnnotationDbi
-    org.Hs.eg.db
-    devtools
+    AnnotationDbi,
+    org.Hs.eg.db,
+    devtools,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

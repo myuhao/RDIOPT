@@ -13,12 +13,14 @@ test_that("Detect entrezID", {
     is_entrezID(c("1234", "3334")),
     TRUE
   )
-
   expect_equal(
     suppressWarnings(is_entrezID(c("1234", "APOE"))),
     FALSE
   )
-
+  expect_equal(
+    is_entrezID(NA),
+    FALSE
+  )
   expect_warning(
     is_entrezID("MAPT", silent = FALSE)
   )
@@ -45,6 +47,14 @@ test_that("Convert a vector of genes with special cases", {
 
   expect_equal(
     convert_to_entrezID(NA),
-    c("NA"=NA_character_)
+    c("NA" = NA_character_)
   )
+
+  # These are out-date symbols,
+  # We want to return NA here
+  expect_equal(
+    convert_to_entrezID(c("WIBG", "NARS", "PARK2")),
+    c(WIBG = NA_character_, NARS = NA_character_, PARK2 = NA_character_)
+  )
+
 })

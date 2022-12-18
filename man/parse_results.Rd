@@ -2,7 +2,7 @@
 % Please edit documentation in R/find_orthologs.R
 \name{parse_results}
 \alias{parse_results}
-\title{Helper function to parse the results}
+\title{Helper function to parse the results that has ortholog}
 \usage{
 parse_results(raw_res)
 }
@@ -10,6 +10,6 @@ parse_results(raw_res)
 \item{raw_res}{The content of a httr response}
 }
 \description{
-Helper function to parse the results
+Helper function to parse the results that has ortholog
 }
 \keyword{internal}

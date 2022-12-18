@@ -19,6 +19,9 @@
     <loc>/reference/check_arg.html</loc>
   </url>
   <url>
+    <loc>/reference/covert_symbol.html</loc>
+  </url>
+  <url>
     <loc>/reference/find_orthologs.html</loc>
   </url>
   <url>
@@ -28,6 +31,9 @@
     <loc>/reference/index.html</loc>
   </url>
   <url>
+    <loc>/reference/is_entrezID.html</loc>
+  </url>
+  <url>
     <loc>/reference/parse_response.html</loc>
   </url>
   <url>
@@ -35,6 +41,12 @@
   </url>
   <url>
     <loc>/reference/parse_search_detail.html</loc>
+  </url>
+  <url>
+    <loc>/reference/results_NA_id.html</loc>
+  </url>
+  <url>
+    <loc>/reference/results_no_ortholog.html</loc>
   </url>
   <url>
     <loc>/reference/submit_ids.html</loc>

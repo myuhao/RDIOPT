@@ -75,7 +75,7 @@ find_orthologs = function(genes, from = 9606, to = 7227, filter = "none", versio
     genes = convert_to_entrezID(genes)
 
     # After conversion clean up:
-    if (length(genes) < 1 || all(is.na(genes))) {
+    if (length(genes) < 1) {
       stop("The input genes can't be converted to entrezIDs\n")
     }
   }
@@ -146,11 +146,6 @@ check_arg = function(
   invisible(vec)
 }
 
-#' Deal with a NA request
-#' @keywords internal
-submit_ids_NA = function() {
-
-}
 
 #' Function to submit a query to DIOPT
 #' @importFrom stringr str_c
@@ -216,7 +211,7 @@ parse_search_detail = function(raw_res) {
     )
 }
 
-#' Helper function to parse the results
+#' Helper function to parse the results that has ortholog
 #' @importFrom tibble enframe
 #' @importFrom purrr map_chr
 #' @importFrom tidyr unnest_wider unnest_longer
@@ -242,12 +237,53 @@ parse_results = function(raw_res) {
     relocate(methods, .after = last_col())
 }
 
-#' Tibble when there is no ortholog
+#' Helper function to parse the results that has no ortholog
 #'
 #' @keywords internal
 results_no_ortholog = function() {
-  tibble::tibble(to_id = NA_character_, to_symbol = "No Ortholog Data")
+  tibble::tibble(
+    from_id = NA,
+    to_id = NA_character_,
+    to_symbol = "No Ortholog Data",
+    confidence = NA,
+    score = NA,
+    best_score = NA,
+    max_score = NA,
+    best_score_rev = NA,
+    best_score_count = NA,
+    mist_ppi = NA,
+    mist_genetic = NA,
+    to_entrez_geneid = NA,
+    species_id = NA,
+    species_specific_geneid = NA,
+    species_specific_geneid_type = NA,
+    count = NA,
+    methods = NA
+    )
 }
+
+#' Helper function to parse the results when failed to convert to entrezID
+#'
+#' @importFrom magrittr %>%
+#'
+#' @keywords internal
+results_NA_id = function() {
+  tibble::tibble(
+    date = NA,
+    search_gene_entrez = NA,
+    filter = NA,
+    from_entrez_geneid = NA,
+    symbol = NA,
+    description = NA,
+    chromosome = NA,
+    gene_type = NA,
+    ensembl_geneid = NA,
+    diopt_version = NA
+  ) %>%
+    tibble::add_column(results_no_ortholog()) %>%
+    dplyr::mutate(to_symbol = NA)
+}
+
 
 #' Function to parse the response.
 #' @importFrom stringr str_detect
@@ -261,7 +297,7 @@ results_no_ortholog = function() {
 #' @keywords internal
 parse_response = function(raw_res) {
   if (isTRUE(raw_res$is_NA)) {
-    return(NA)
+    return(results_NA_id())
   }
 
   query_info = parse_search_detail(raw_res)

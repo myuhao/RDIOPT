@@ -22,3 +22,4 @@ the input. If the input doesn't mtach, will return \code{NA} instead
 \seealso{
 \code{\link[AnnotationDbi:AnnotationDb-class]{AnnotationDbi::mapIds()}} and \link[org.Hs.eg.db:org.Hs.egBASE]{org.Hs.eg.db::org.Hs.eg.db}
 }
+\keyword{internal}
