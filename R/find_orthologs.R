@@ -197,6 +197,7 @@ parse_search_detail = function(raw_res) {
     rename(
       from_entrez_geneid = geneid
     ) %>%
+    mutate(chromosome = as.character(chromosome)) %>%
     select(
       date,
       search_gene_entrez,
@@ -275,7 +276,7 @@ results_NA_id = function() {
     from_entrez_geneid = NA,
     symbol = NA,
     description = NA,
-    chromosome = NA,
+    chromosome = NA_character_,
     gene_type = NA,
     ensembl_geneid = NA,
     diopt_version = NA
